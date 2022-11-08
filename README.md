@@ -1,0 +1,9 @@
+- [Installing Docker](https://linuxhint.com/install_docker_raspberry_pi-2/)
+- [Setting up airflow docker compose](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
+- [Setting connection ids in `.env` file](https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html)
+    - Additionally a `env_file: .env` param must be set in the docker-compose
+    - The connection string to postgres is a little complicated. 
+        - [Instructions for setting up the path](https://stackoverflow.com/questions/3582552/what-is-the-format-for-the-postgresql-connection-string-url)
+        - [Instructions for accessing the linux localhost from inside a docker container](https://stackoverflow.com/a/67158212)
+- [Setting up postgres](https://pimylifeup.com/raspberry-pi-postgresql/)
+- [Granting postgres privileges](https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/)
