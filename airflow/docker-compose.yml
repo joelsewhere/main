@@ -75,6 +75,14 @@ x-airflow-common:
     - "host.docker.internal:host-gateway"
 
 services:
+  chrome:
+    image: seleniarm/standalone-chromium:latest
+    hostname: chrome
+    privileged: true
+    shm_size: '4gb'
+    ports:
+      - "4444:4444"
+      
   postgres:
     image: postgres:13
     environment:
