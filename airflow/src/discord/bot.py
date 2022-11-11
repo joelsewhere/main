@@ -1,6 +1,14 @@
 from discord import Client, Intents
 
 class DiscordClient(Client):
+    """
+    Base class for a discord bot.
+
+    The general idea is to create component classes
+    that are inherited into another class along with 
+    DiscordClient, where the primary functionality
+    of the bot is activated by `self.start()`.
+    """
 
     intents = Intents.default()
     intents.members = True
@@ -16,3 +24,6 @@ def bot_factory(*bot_components):
         pass
 
     return DiscordBot
+
+def start(self):
+    pass
