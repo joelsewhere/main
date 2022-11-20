@@ -3,6 +3,8 @@ from .discord.bot import bot_factory
 from discord import ChannelType
 
 userid = os.environ['DiscordTestUser']
+email = os.environ['MintLogin']
+password = os.environ['MintPassword']
 
 class VerificationBot:
 
@@ -27,8 +29,7 @@ class VerificationBot:
     async def trigger_components(self):
         await self.send_prompt()
 
-# INCOMPLETE
-    # requires development of discord hook
+
 def mint_login(driver, email, password):
     driver.get('https://accounts.intuit.com'
                '/index.html'
@@ -50,7 +51,7 @@ def mint_login(driver, email, password):
     text_auth.click()
     
     auth_code = driver.find_element_by_name('Verification code')
-    bot = bot_factory(VerificationBot)
+    bot = bot_factory(VerificationBot)  # discord bot
     verification_code = bot().run()
     auth_code.send_keys(verification_code)
     
@@ -59,3 +60,12 @@ def export_data(driver):
     driver.get('https://mint.intuit.com/transaction.event')
     export = driver.find_element_by_xpath('//button[contains(., "Export")]')
     export.click()
+
+if __name__ == "__main__":
+    from selenium import webdriver
+    import chromedriver_autoinstaller
+
+    chromedriver_autoinstaller.install()
+    driver = webdriver.Chrome()
+    mint_login(driver, email, password)
+    export_data(driver)
