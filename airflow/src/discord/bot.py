@@ -26,7 +26,7 @@ class DiscordClient(Client):
         pass
 
     def run(self):
-        super().run(self.TOKEN)
+        return super().run(self.TOKEN)
 
 def bot_factory(*bot_components):
 
