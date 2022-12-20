@@ -1,0 +1,1 @@
+This directory is for selenium downloads and testing flatfiles. 

@@ -1,5 +1,5 @@
 import os
-from .discord.bot import bot_factory
+from src.discord.bot import bot_factory
 from discord import ChannelType
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,10 +12,14 @@ driver = webdriver.Chrome()
 
 userid = os.environ['DiscordTestUser']
 email = os.environ['MintLogin']
-mint_password = os.environ['MintPassword']
+password = os.environ['MintPassword']
 
 
 class VerificationBot:
+    """
+    Requests a verification code
+    via private discord message
+    """
 
     async def send_prompt(self):
         user = await self.fetch_user(userid)
@@ -38,10 +42,22 @@ class VerificationBot:
     async def trigger_components(self):
         await self.send_prompt()
 
+def download_transactions(driver, email, password, self, *args, **kwargs) -> None:
+    """
+    Logs into mint and downloads
+    a csv of transaction history
+    """
+    mint_login(driver, email, password)
+    export_data(driver)
 
-def mint_login(driver, email, password):
+def mint_login(
+    driver: webdriver.Chrome,
+    login: str,
+    password: str
+    ) -> None:
+
     driver.get('https://accounts.intuit.com/index.html')
-    login_username(driver, email)
+    login_username(driver, login)
     try:
         login_password(driver, password)
         login_auth(driver)
@@ -52,7 +68,11 @@ def mint_login(driver, email, password):
     except:
         pass
 
-def login_username(driver, email):
+def login_username(
+    driver: webdriver.Chrome,
+    login: str
+    ) -> None:
+
     username = WebDriverWait(
         driver, 30
     ).until(
@@ -61,24 +81,28 @@ def login_username(driver, email):
         )
     )
     username.click()
-    username.send_keys(email)
+    username.send_keys(login)
     button = driver.find_element(By.XPATH, "//button[@type='submit']")
     button.click()
 
-def login_password(driver, password):
-    password = WebDriverWait(
+def login_password(
+    driver: webdriver.Chrome,
+    password: str
+    ) -> None:
+
+    password_field = WebDriverWait(
         driver, 30
     ).until(
         presence_of_element_located(
             (By.NAME, 'Password')
         )
     )
-    password.click()
-    password.send_keys(mint_password)
+    password_field.click()
+    password_field.send_keys(password)
     button = driver.find_elements(By.XPATH, "//button[@type='submit']")[1]
     button.click()
 
-def login_auth(driver):
+def login_auth(driver: webdriver.Chrome) -> None:
     auth_code = WebDriverWait(
         driver, 20
     ).until(
@@ -99,7 +123,7 @@ def login_auth(driver):
         button.click()
     
     
-def export_data(driver):
+def export_data(driver: webdriver.Chrome) -> None:
     driver.get('https://mint.intuit.com/transaction.event')
     export = WebDriverWait(
         driver, 30
@@ -108,16 +132,4 @@ def export_data(driver):
             (By.XPATH, "//button[contains(text(), 'Export')]")
         )
     )
-    export.click() 
-
-
-def test():
-    bot = bot_factory(VerificationBot)
-    bot = bot()
-    bot.run()
-    print(bot.code.content)
-
-
-def main():
-    mint_login(driver, email, mint_password)
-    export_data(driver)
+    export.click()

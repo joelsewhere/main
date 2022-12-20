@@ -1,7 +1,7 @@
 import os
 from discord import Client, Intents
 
-class DiscordClient(Client):
+class DiscordBot(Client):
     """
     Base class for a discord bot.
 
@@ -30,7 +30,7 @@ class DiscordClient(Client):
 
 def bot_factory(*bot_components):
 
-    class DiscordBot(*bot_components, DiscordClient):
+    class DiscordBot(*bot_components, DiscordBot):
         pass
 
     return DiscordBot
